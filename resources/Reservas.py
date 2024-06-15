@@ -22,17 +22,18 @@ class ReservasList(MethodView):
         reservas = Reservas.query.all()
         return reservas
 
-    @blp.arguments(ReservasSchema)  # Define el esquema para la carga útil
-    @blp.response(201, ReservasSchema)  # Define el esquema para la respuesta
+    @blp.arguments(ReservasSchema)
+    @blp.response(201, ReservasSchema)
     def post(self, data):
         nueva_reserva = Reservas(
-            idFiesta =data['idFiesta'],
+            idFiesta=data['idFiesta'],
             vaucher=data['vaucher'],
             nombreReserva=data['nombreReserva'],
             apellidoReserva=data['apellidoReserva'],
             numeroPersonas=data['numeroPersonas'],
             hora=data['hora'],
-            telefono=data['telefono'])
+            telefono=data['telefono']
+        )
         db.session.add(nueva_reserva)
         db.session.commit()
         return nueva_reserva
@@ -75,3 +76,12 @@ class ReservaResource(MethodView):
         db.session.commit()
         return '', 204
 
+# GET /api/reservas/GetAllIdFiesta/<int:idFiesta>
+@blp.route('/GetAllIdFiesta/<int:idFiesta>')
+class ReservaByIdFiesta(MethodView):
+    @blp.response(200, ReservasSchema(many=True))
+    def get(self, idFiesta):
+        reservas = Reservas.query.filter_by(idFiesta=idFiesta).all()
+        if not reservas:
+            abort(404, message="No se encontraron reservas para la fiesta con el ID proporcionado.")
+        return reservas

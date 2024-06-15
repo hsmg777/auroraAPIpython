@@ -70,3 +70,5 @@ class FiestaResource(MethodView):
         db.session.delete(fiesta)
         db.session.commit()
         return '', 204
+
+    

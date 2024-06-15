@@ -11,7 +11,8 @@ class Reservas(db.Model):
     hora = db.Column(db.String(20), nullable=False)
     telefono = db.Column(db.String(20), nullable=False)
     
-    def __init__(self, vaucher, nombreReserva, apellidoReserva, numeroPersonas, hora, telefono):
+    def __init__(self, idFiesta, vaucher, nombreReserva, apellidoReserva, numeroPersonas, hora, telefono):
+        self.idFiesta=idFiesta
         self.vaucher = vaucher
         self.nombreReserva = nombreReserva
         self.apellidoReserva = apellidoReserva
